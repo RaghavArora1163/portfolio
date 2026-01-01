@@ -201,6 +201,8 @@ class PortfolioHome extends StatelessWidget {
                 ),
 
                 sectionTitle("Education"),
+                expTile("Indian Institure of Technolgy Ropar", "Diploma Degree (Artificial Intelligence )",
+                    "2024 – 2025"),
                 expTile("Arya College of Engineering & IT", "B.Tech (ECE)",
                     "2019 – 2023"),
 
