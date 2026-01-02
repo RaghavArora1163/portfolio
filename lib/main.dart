@@ -182,6 +182,7 @@ class PortfolioHome extends StatelessWidget {
                     projectCard("Smart Story Teller",
                         "AI storytelling with TTS and video generation", [
                       "Python",
+                      "Pollination AI ( Open Source AI)",
                       "Flask",
                       "MoviePy"
                     ]),
