@@ -116,7 +116,7 @@ class PortfolioHome extends StatelessWidget {
                     const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Hi, I'm Raghav",
+                        Text("Hi, I'm Raghav Arora 👋",
                             style: TextStyle(
                                 fontSize: 44, fontWeight: FontWeight.bold)),
                         SizedBox(height: 6),
