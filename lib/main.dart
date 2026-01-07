@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const PortfolioApp());
@@ -33,7 +34,6 @@ class _PortfolioAppState extends State<PortfolioApp> {
   }
 }
 
-/// MAIN HOME
 class PortfolioHome extends StatefulWidget {
   final VoidCallback toggleTheme;
 
@@ -45,8 +45,6 @@ class PortfolioHome extends StatefulWidget {
 
 class _PortfolioHomeState extends State<PortfolioHome>
     with TickerProviderStateMixin {
-
-  /// Animation controllers
   late final AnimationController _fadeController =
       AnimationController(vsync: this, duration: const Duration(milliseconds: 900))
         ..forward();
@@ -57,7 +55,6 @@ class _PortfolioHomeState extends State<PortfolioHome>
 
   final ScrollController _scroll = ScrollController();
 
-  /// KEYS FOR NAVIGATION SCROLL
   final aboutKey = GlobalKey();
   final projectsKey = GlobalKey();
   final skillsKey = GlobalKey();
@@ -69,6 +66,12 @@ class _PortfolioHomeState extends State<PortfolioHome>
       curve: Curves.easeInOut,
       duration: const Duration(milliseconds: 600),
     );
+  }
+
+  /// open external links
+  Future<void> openLink(String url) async {
+    final uri = Uri.parse(url);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
   @override
@@ -95,21 +98,12 @@ class _PortfolioHomeState extends State<PortfolioHome>
                 children: [
                   const DrawerHeader(
                     child: Text("Navigation",
-                        style:
-                            TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                   ),
-                  ListTile(
-                      title: const Text("About"),
-                      onTap: () => scrollTo(aboutKey)),
-                  ListTile(
-                      title: const Text("Skills"),
-                      onTap: () => scrollTo(skillsKey)),
-                  ListTile(
-                      title: const Text("Projects"),
-                      onTap: () => scrollTo(projectsKey)),
-                  ListTile(
-                      title: const Text("Contact"),
-                      onTap: () => scrollTo(contactKey)),
+                  ListTile(title: const Text("About"), onTap: () => scrollTo(aboutKey)),
+                  ListTile(title: const Text("Skills"), onTap: () => scrollTo(skillsKey)),
+                  ListTile(title: const Text("Projects"), onTap: () => scrollTo(projectsKey)),
+                  ListTile(title: const Text("Contact"), onTap: () => scrollTo(contactKey)),
                 ],
               ),
             )
@@ -117,25 +111,29 @@ class _PortfolioHomeState extends State<PortfolioHome>
 
       body: Row(
         children: [
-          /// DESKTOP SIDE NAV BAR
+          /// ⛓️ SIDEBAR WITH SOCIAL ICONS ONLY (DESKTOP)
           if (!isMobile)
             NavigationRail(
+              labelType: NavigationRailLabelType.all,
               destinations: const [
                 NavigationRailDestination(
-                    icon: Icon(Icons.person), label: Text("About")),
+                  icon: Icon(Icons.code),
+                  label: Text("LeetCode"),
+                ),
                 NavigationRailDestination(
-                    icon: Icon(Icons.star), label: Text("Skills")),
+                  icon: Icon(Icons.linked_camera_outlined),
+                  label: Text("LinkedIn"),
+                ),
                 NavigationRailDestination(
-                    icon: Icon(Icons.work), label: Text("Projects")),
-                NavigationRailDestination(
-                    icon: Icon(Icons.mail), label: Text("Contact")),
+                  icon: Icon(Icons.account_circle),
+                  label: Text("GitHub"),
+                ),
               ],
               selectedIndex: 0,
               onDestinationSelected: (i) {
-                if (i == 0) scrollTo(aboutKey);
-                if (i == 1) scrollTo(skillsKey);
-                if (i == 2) scrollTo(projectsKey);
-                if (i == 3) scrollTo(contactKey);
+                if (i == 0) openLink("https://leetcode.com/u/raghavarora1163/");
+                if (i == 1) openLink("https://www.linkedin.com/in/raghav-arora-b06534210/");
+                if (i == 2) openLink("https://github.com/RaghavArora1163");
               },
             ),
 
@@ -148,7 +146,6 @@ class _PortfolioHomeState extends State<PortfolioHome>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// HERO SECTION WITH ANIMATION
                     FadeTransition(
                       opacity: _fadeController,
                       child: SlideTransition(
@@ -180,12 +177,10 @@ class _PortfolioHomeState extends State<PortfolioHome>
                                     ],
                                   )
                                 : Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: const [
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text("Hi, I'm Raghav Arora 👋",
                                               style: TextStyle(
@@ -211,12 +206,10 @@ class _PortfolioHomeState extends State<PortfolioHome>
 
                     const SizedBox(height: 25),
 
-                    /// ABOUT
                     sectionTitle("About", aboutKey),
                     animatedText(
-                        "Full-stack developer passionate about AI, backend systems, scalable APIs, and Flutter applications. Experienced in Flask, Node.js, Firebase and ML workflows."),
+                        "Full-stack developer passionate about AI, backend systems, scalable APIs, and Flutter applications."),
 
-                    /// SKILLS
                     sectionTitle("Skills", skillsKey),
                     animatedWrap([
                       "Python",
@@ -229,60 +222,51 @@ class _PortfolioHomeState extends State<PortfolioHome>
                       "FastAPI",
                       "REST APIs",
                       "JWT",
-                      "MoviePy",
-                      "AI/ML Integration",
-                      "FFmpeg"
+                      "AI/ML Integration"
                     ]),
 
-                    /// PROJECTS GRID
                     sectionTitle("Projects", projectsKey),
-
                     LayoutBuilder(
-  builder: (context, constraints) {
-    int count = 2;
+                      builder: (context, constraints) {
+                        int count = 2;
+                        if (constraints.maxWidth < 600) count = 1;
+                        if (constraints.maxWidth > 1100) count = 3;
 
-    if (constraints.maxWidth < 600) count = 1;
-    if (constraints.maxWidth > 1100) count = 3;
+                        return GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: count,
+                            crossAxisSpacing: 14,
+                            mainAxisSpacing: 14,
+                            mainAxisExtent: 170,
+                          ),
+                          itemCount: 3,
+                          itemBuilder: (context, index) {
+                            if (index == 0) {
+                              return projectCard(
+                                "Smart Story Teller",
+                                "AI storytelling with TTS and video generation",
+                                ["Python", "Flask", "MoviePy"],
+                              );
+                            } else if (index == 1) {
+                              return projectCard(
+                                "Flask Backend System",
+                                "Auth, contests, Firebase secure APIs",
+                                ["Flask", "JWT", "Firebase"],
+                              );
+                            } else {
+                              return projectCard(
+                                "Medical Learning App",
+                                "Flutter UI + Firebase backend",
+                                ["Flutter", "Dart", "Firebase"],
+                              );
+                            }
+                          },
+                        );
+                      },
+                    ),
 
-    return GridView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: count,
-        crossAxisSpacing: 14,
-        mainAxisSpacing: 14,
-
-        /// 👇 KEY FIX — controls height of each card
-        mainAxisExtent: 170,
-      ),
-      itemCount: 3,
-      itemBuilder: (context, index) {
-        if (index == 0) {
-          return projectCard(
-            "Smart Story Teller",
-            "AI storytelling with TTS and video generation",
-            ["Python", "Flask", "MoviePy"],
-          );
-        } else if (index == 1) {
-          return projectCard(
-            "Flask Backend System",
-            "Auth, contests, Firebase secure APIs",
-            ["Flask", "JWT", "Firebase"],
-          );
-        } else {
-          return projectCard(
-            "Medical Learning App",
-            "Flutter UI + Firebase backend",
-            ["Flutter", "Dart", "Firebase"],
-          );
-        }
-      },
-    );
-  },
-)
-,
-
-                    /// CONTACT
                     sectionTitle("Get in Touch", contactKey),
                     animatedText(
                         "Email: raghavarora1163@gmail.com\nPhone: +91 8955013675"),
@@ -297,8 +281,6 @@ class _PortfolioHomeState extends State<PortfolioHome>
       ),
     );
   }
-
-  /// ---------- REUSABLE UI HELPERS ----------
 
   Widget sectionTitle(String title, Key key) {
     return Padding(
