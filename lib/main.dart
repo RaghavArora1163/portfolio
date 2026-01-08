@@ -24,7 +24,7 @@ class _PortfolioAppState extends State<PortfolioApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Raghav Portfolio",
+      title: "Raghav Arora Portfolio",
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(useMaterial3: true),
       darkTheme: ThemeData.dark(useMaterial3: true),
