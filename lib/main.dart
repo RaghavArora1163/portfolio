@@ -81,7 +81,7 @@ class _PortfolioHomeState extends State<PortfolioHome>
     return Scaffold(
       appBar: isMobile
           ? AppBar(
-              title: const Text("Raghav Portfolio"),
+              title: const Text("Mr. Raghav Arora Portfolio"),
               actions: [
                 IconButton(
                   onPressed: widget.toggleTheme,
