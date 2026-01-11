@@ -171,7 +171,7 @@ class _PortfolioHomeState extends State<PortfolioHome>
                                               fontWeight: FontWeight.bold)),
                                       SizedBox(height: 6),
                                       Text(
-                                        "Building intelligent apps and scalable backend systems with Flutter and flask with degree in artificial intelligence from IIT Ropar.",
+                                        "Building intelligent apps and scalable backend systems with Flutter and flask with degree in artificial intelligence from IIT Ropar. and passionate about technology.",
                                         textAlign: TextAlign.center,
                                       )
                                     ],
