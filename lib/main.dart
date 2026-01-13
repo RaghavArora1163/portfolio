@@ -182,7 +182,7 @@ class _PortfolioHomeState extends State<PortfolioHome>
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text("Hi, I'm Raghav Arora 👋",
+                                          Text("Hi, I'm Er. Raghav Arora 👋",
                                               style: TextStyle(
                                                   fontSize: 44,
                                                   fontWeight: FontWeight.bold)),
